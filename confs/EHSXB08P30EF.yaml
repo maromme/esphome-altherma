@@ -163,7 +163,7 @@ sensor:
     accuracy_decimals: 1
 
 # espaltherma_r1t
-  - <<: &temp
+  - <<: *temp
     name: Auslass Wasser Wärmetauscher Temperatur (R1T)
     register: 0x61
     offset: 2
@@ -171,7 +171,7 @@ sensor:
     datasize: 2
 
 # espaltherma_r2t
-  - <<: &temp
+  - <<: *temp
     name: Auslass Wasser BUH Temperatur (R2T)
     register: 0x61
     offset: 4
