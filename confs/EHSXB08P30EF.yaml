@@ -1,0 +1,287 @@
+# anchors
+.altherma_base: &altherma_base
+  platform: altherma_hub
+  altherma_hub_id: altherma_hub_1
+
+.temp: &temp
+  <<: *altherma_base
+  device_class: temperature
+  unit_of_measurement: °C
+  state_class: measurement
+  accuracy_decimals: 1
+
+.binary: &binary
+  <<: *altherma_base
+
+.current: &current
+  <<: *altherma_base
+  device_class: current
+  unit_of_measurement: A
+  icon: mdi:current-ac
+  state_class: measurement
+  accuracy_decimals: 1  
+
+.voltage: &voltage
+  <<: *altherma_base
+  device_class: voltage
+  unit_of_measurement: V
+  state_class: measurement
+
+.rps: &rps
+  <<: *altherma_base
+  unit_of_measurement: rps
+  state_class: measurement
+
+.rpm: &rpm
+  <<: *altherma_base
+  unit_of_measurement: rpm
+  state_class: measurement
+
+.text: &text
+  <<: *altherma_base
+
+sensor:
+
+# espaltherma_operation
+  - <<: *altherma_base
+    name: Aktuelle Betriebsart
+    register: 0x10
+    offset: 0
+    convid: 217
+    datasize: 1
+
+# espaltherma_abtauung
+  - <<: *altherma_base
+    name: Abtauung
+    register: 0x10
+    offset: 1
+    convid: 304
+    datasize: 1
+
+# espaltherma_thermostat
+  - <<: *altherma_base
+    name: Thermostat EIN/AUS
+    register: 0x10
+    offset: 1
+    convid: 307
+    datasize: 1
+
+# espaltherma_r6t    
+  - <<: &temp
+    name: Außenlufttemperatur
+    register: 0x20
+    offset: 0
+    convid: 105
+    datasize: 2
+
+# espaltherma_inverter
+  - <<: *current
+    name: INV Primärstrom
+    register: 0x21
+    offset: 0
+    convid: 105
+    datasize: 2
+
+# espaltherma_fan  
+  - <<: *rpm
+    name: Ventilator 1 Drehzahl
+    register: 0x30
+    offset: 1
+    convid: 211
+    datasize: 1
+
+# espaltherma_iuoperation    
+  - <<: *altherma_base
+    name: I/U Betriebsart
+    register: 0x60
+    offset: 2
+    convid: 315
+    datasize: 1
+
+# espaltherma_thermostat  
+  - <<: *binary
+    name: Thermostat EIN/AUS
+    register: 0x60
+    offset: 2
+    convid: 303
+    datasize: 1
+
+# espaltherma_frostschutz  
+  - <<: *altherma_base
+    name: Frostschutz
+    register: 0x60
+    offset: 2
+    convid: 302
+    datasize: 1
+
+# espaltherma_operationstate
+    name: Betrieb / Störung
+    register: 0x60
+    offset: 5
+    convid: 203
+    datasize: 1
+
+# espaltherma_setpoint_dhw  
+  - <<: *temp
+    name: Sollwert Brauchwasser
+    register: 0x60
+    offset: 7
+    convid: 105
+    datasize: 2
+
+# espaltherma_setpoint_heizung
+  - <<: *temp
+    name: Sollwert Heizungsvorlauf
+    register: 0x60
+    offset: 9
+    convid: 105
+    datasize: 2
+
+# espaltherma_heizstab1    
+  - <<: *altherma_base
+    name: Heizstab Stufe 1
+    register: 0x60
+    offset: 12
+    convid: 304
+    datasize: 1
+
+# espaltherma_heizstab1  
+  - <<: *altherma_base
+    name: Heizstab Stufe 2
+    register: 0x60
+    offset: 12
+    convid: 303
+    datasize: 1
+    
+# espaltherma_wasserpumpe  
+  - <<: *altherma_base
+    name: Wasserpumpenbetrieb
+    register: 0x60
+    offset: 12
+    convid: 301
+    datasize: 1
+    accuracy_decimals: 1
+
+# espaltherma_r1t
+  - <<: &temp
+    name: Auslass Wasser Wärmetauscher Temperatur (R1T)
+    register: 0x61
+    offset: 2
+    convid: 105
+    datasize: 2
+
+# espaltherma_r2t
+  - <<: &temp
+    name: Auslass Wasser BUH Temperatur (R2T)
+    register: 0x61
+    offset: 4
+    convid: 105
+    datasize: 2
+
+# espaltherma_r3t
+  - <<: *temp
+    name: Kältemittel Flüssigkeitstemperatur (R3T)
+    register: 0x61
+    offset: 6
+    convid: 105
+    datasize: 2
+
+# espaltherma_r4t
+  - <<: *temp
+    name: Rücklauftemperatur vor Plattenwärmetauscher (R4T)
+    register: 0x61
+    offset: 8
+    convid: 105
+    datasize: 2
+
+# espaltherma_r5t
+  - <<: *temp
+    name: Brauchwassertemperatur Speicher (R5T)
+    register: 0x61
+    offset: 10
+    convid: 105
+    datasize: 2
+
+# espaltherma_hochleistung_dhw
+  - <<: *binary
+    name: Hochleistungs-DHW-Betrieb. EIN/AUS
+    register: 0x62
+    offset: 2
+    convid: 304
+    datasize: 1
+    
+# espaltherma_roomheating
+  - <<: *binary
+    name: Raumheizbetrieb EIN/AUS
+    register: 0x62
+    offset: 2
+    convid: 303
+    datasize: 1
+    
+# flow  
+  - <<: *altherma_base
+    name: Durchflussmenge
+    register: 0x62
+    offset: 9
+    convid: 105
+    datasize: 2
+    device_class: volume_flow_rate
+    unit_of_measurement: l/min
+    state_class: measurement
+    accuracy_decimals: 1
+
+# espaltherma_waterpressure  
+  - <<: *altherma_base
+    name: Water pressure (bar)
+    register: 0x62
+    offset: 11
+    convid: 105
+    datasize: 1
+    device_class: pressure
+    unit_of_measurement: bar
+    state_class: measurement
+    accuracy_decimals: 1
+  
+# espaltherma_r7t
+  - <<: *temp
+    name: Mixed leaving water temperature after tank (R7T)
+    register: 0x63
+    offset: 8
+    convid: 105
+    datasize: 2
+
+# espaltherma_tankvalve  (0:Bypass 100:Tank)
+  - <<: *altherma_base
+    name: Tank valve position
+    register: 0x63
+    offset: 10
+    convid: 101
+    datasize: 1
+    device_class: opening
+    unit_of_measurement: "%"
+    state_class: measurement
+    accuracy_decimals: 1
+
+ # espaltherma_bypassvalve (0:Bypass 100:Emitter)
+  - <<: *altherma_base
+    name: Bypass valve position
+    register: 0x63
+    offset: 11
+    convid: 101
+    datasize: 1
+    device_class: opening
+    unit_of_measurement: "%"
+    state_class: measurement
+    accuracy_decimals: 1
+
+# nicht ind er usprünglichen  
+  - <<: *altherma_base
+    name: Target delta T heating
+    register: 0x64
+    offset: 14
+    convid: 152
+    datasize: 1
+    device_class: temperature
+    unit_of_measurement: °C
+    state_class: measurement
+    accuracy_decimals: 1
