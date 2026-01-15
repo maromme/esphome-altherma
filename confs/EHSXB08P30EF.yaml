@@ -67,7 +67,7 @@ sensor:
     datasize: 1
 
 # espaltherma_r6t    
-  - <<: &temp
+  - <<: *temp
     name: Außenlufttemperatur
     register: 0x20
     offset: 0
